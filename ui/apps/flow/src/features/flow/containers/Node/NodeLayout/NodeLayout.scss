@@ -1,4 +1,4 @@
-@import '../../../../../theme/variables.scss';
+@use '../../../../../theme/variables.scss';
 
 .react-flow__node {
   &.selected {
@@ -15,7 +15,7 @@
     color: var(--color-primary);
     background-color: white;
     border-radius: 0.25em;
-    border: 1px solid $border-color;
+    border: 1px solid variables.$border-color;
     background-color: #fff;
     width: 350px;
     height: 210px;
@@ -30,7 +30,7 @@
       margin: 1em 1.5em;
       margin-bottom: 0;
       padding-bottom: 1em;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid variables.$border-color;
       display: flex;
       align-items: center;
     }
@@ -38,7 +38,7 @@
     &__footer {
       margin: 1em 1.5em;
       padding-top: 1em;
-      border-top: 1px solid $border-color;
+      border-top: 1px solid variables.$border-color;
       display: flex;
       justify-content: flex-end;
     }

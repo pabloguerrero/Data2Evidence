@@ -1,21 +1,21 @@
-@import '../../../../../theme/variables.scss';
+@use '../../../../../theme/variables.scss';
 
 .flow-revision-list {
   .flow-revision-item {
     &__version {
-      color: $primary-color;
+      color: variables.$primary-color;
     }
 
     &__audit {
-      color: $neutral-light-color;
+      color: variables.$neutral-light-color;
       font-size: 0.8em;
     }
 
     &__comment {
-      color: $primary-color;
+      color: variables.$primary-color;
       font-style: italic;
       font-size: 0.9em;
-      color: $primary-color;
+      color: variables.$primary-color;
       font-style: italic;
       font-size: 0.9em;
 
@@ -64,7 +64,7 @@
   }
 
   .MuiListItem-root {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid variables.$border-color;
     padding: 16px 0;
 
     &:last-child {

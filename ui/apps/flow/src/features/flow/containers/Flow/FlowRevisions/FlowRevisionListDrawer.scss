@@ -1,4 +1,4 @@
-@import '../../../../../theme/variables.scss';
+@use '../../../../../theme/variables.scss';
 
 .flow-revision-list-drawer {
   &__header {
@@ -7,7 +7,7 @@
     margin: 0.75em 1.5em;
     margin-bottom: 0;
     padding-bottom: 0.75em;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid variables.$border-color;
   }
 
   &__content {

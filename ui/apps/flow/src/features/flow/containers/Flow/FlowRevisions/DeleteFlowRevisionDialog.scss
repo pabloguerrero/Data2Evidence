@@ -1,4 +1,4 @@
-@import '../../../../../theme/variables.scss';
+@use '../../../../../theme/variables.scss';
 
 .delete-flow-revision-dialog {
   &__content {
@@ -6,7 +6,7 @@
   }
 
   &__footer {
-    border-top: 1px solid $border-color;
+    border-top: 1px solid variables.$border-color;
     padding: 1.5em;
 
     &-actions {
