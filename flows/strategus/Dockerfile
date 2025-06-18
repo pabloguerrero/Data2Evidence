@@ -55,6 +55,13 @@ RUN apt-get update && \
     wget \
     && apt-get clean
 
+RUN apt-get install -y --no-install-recommends libcurl4-openssl-dev \
+pandoc \
+libblas-dev \    
+liblapack-dev  \
+gfortran \
+libmagick++-dev
+
 # Python Library Setup
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 20
 RUN python3 -m venv /usr/src/app
@@ -98,6 +105,13 @@ RUN Rscript -e 'remotes::install_github("OHDSI/Strategus@v1.3.0", upgrade = "nev
 
 # OHDSI packages and versions - final
 RUN Rscript -e 'as.data.frame(installed.packages())[,c("Package", "Version")]' | awk '{print $1,$NF}' | grep -E "$(grep -l -i ohdsi /usr/local/lib/R/site-library/*/DESCRIPTION | awk -F/ '{print $(NF-1)}' | paste -sd '|')"
+
+# OHDSI studies viewer
+RUN Rscript -e 'install.packages("https://cran.r-project.org/src/contrib/Archive/Matrix/Matrix_1.6-1.tar.gz", repos = NULL, type = "source")'
+RUN Rscript -e 'install.packages(c("MatrixModels", "quantreg", "shiny", "shinydashboard","svglite","car","rstatix", "kableExtra", "ggpubr"), dependencies=TRUE, repos="https://cloud.r-project.org")'
+RUN Rscript -e 'remotes::install_github("ohdsi/OhdsiShinyAppBuilder")'
+RUN Rscript -e 'remotes::install_github("OHDSI/OhdsiReportGenerator", dependencies = TRUE,quiet=FALSE)'
+RUN Rscript -e 'remotes::install_github("OHDSI/OhdsiShinyModules@RC-3.2.0", dependencies=TRUE,quiet=FALSE)'
 
 # Verify installation and fail if any are missing
 RUN Rscript -e "required <- c('Hades', 'CohortGenerator', 'CohortIncidence', 'Strategus', 'Characterization', 'CirceR', 'CohortDiagnostics', 'CohortIncidence', 'CohortMethod', 'FeatureExtraction', 'PatientLevelPrediction', 'SelfControlledCaseSeries', 'DatabaseConnector'); \
