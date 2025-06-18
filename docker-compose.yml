@@ -447,7 +447,8 @@ services:
             "INSTALL_SQLALCHEMY" : "${INSTALL_SQLALCHEMY:-}"
           },
           "jupyter-gateway": {},
-          "mlflow": {}
+          "mlflow": {},
+          "strategus-results": {}
         }
       SERVICE_ROUTES: |-
         {
