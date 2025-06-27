@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('test', async ({ page }) => {
+test('pa-filter-cards', async ({ page }) => {
   // step 1 - navigate to the portal
   await page.goto('https://localhost:443/portal');
   await page.locator('input[name="identifier"]').click();
