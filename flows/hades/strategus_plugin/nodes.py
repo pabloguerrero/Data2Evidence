@@ -881,7 +881,7 @@ class StrategusNode(Node):
 
 @flow(name="execute-r-strategus",
       log_prints=True)
-def execute_r_strategus(analysisSpec, executionSettings, dbSettings):
+def execute_r_strategus(analysisSpec: str, executionSettings, dbSettings):
     with ro.default_converter.context():
         try:
             database_code = dbSettings['database_code']
@@ -902,7 +902,7 @@ def execute_r_strategus(analysisSpec, executionSettings, dbSettings):
             )
 
             rExecutionSettings = rParallelLogger.convertJsonToSettings(executionSettings)
-            rAnalysisSpec = rParallelLogger.convertJsonToSettings(json.dumps(analysisSpec))
+            rAnalysisSpec = rParallelLogger.convertJsonToSettings(analysisSpec)
 
             print('Strategus execution started...')
             rStrategus.execute(connectionDetails = rConnectionDetails, analysisSpecifications = rAnalysisSpec, executionSettings = rExecutionSettings)
@@ -912,18 +912,18 @@ def execute_r_strategus(analysisSpec, executionSettings, dbSettings):
 
 @flow(name="upload-strategus-results",
       log_prints=True)
-def upload_strategus_results(analysisSpec, path_to_results, dbSettings):
+def upload_strategus_results(analysisSpec: str, path_to_results, dbSettings):
     with ro.default_converter.context():
         try:
             database_code = dbSettings['database_code']
-            results_schema = f'results_{dbSettings["dataset_id"]}' # TODO: change to study_id
+            results_schema = f'results_{dbSettings["study_id"]}'
             rStrategus = importr('Strategus')
             rParallelLogger = importr('ParallelLogger')
             rDatabaseConnector = importr('DatabaseConnector')
             databaseConnectorJarFolder = '/app/inst/drivers'
 
             dbdao = DBDao(use_cache_db=False,
-                  database_code=database_code)
+                  database_code=database_code, is_study_results_db = True)
             db_credentials = dbdao.tenant_configs
             rConnectionDetails = rDatabaseConnector.createConnectionDetails(
                 dbms='postgresql', 
@@ -933,22 +933,22 @@ def upload_strategus_results(analysisSpec, path_to_results, dbSettings):
                 pathToDriver = databaseConnectorJarFolder
             )
             rAnalysisSpec = rParallelLogger.convertJsonToSettings(analysisSpec)
-
-            # if schema exists, drop and recreate the schema
-            if(not dbdao.check_schema_exists(results_schema)):
-                dbdao.create_schema(results_schema)
-
             # create results datamodel settings
             resultsDataModelSettings = rStrategus.createResultsDataModelSettings(
                 resultsDatabaseSchema = results_schema,
                 resultsFolder = path_to_results,
             )
-            # create results datamodel 
-            rStrategus.createResultDataModel(
-                analysisSpecifications = rAnalysisSpec,
-                resultsDataModelSettings = resultsDataModelSettings,
-                resultsConnectionDetails = rConnectionDetails
-            )
+
+            # if schema does not exist, create one (including the data model)
+            if(not dbdao.check_schema_exists(results_schema)):
+                dbdao.create_schema(results_schema)
+                # create results datamodel 
+                rStrategus.createResultDataModel(
+                    analysisSpecifications = rAnalysisSpec,
+                    resultsDataModelSettings = resultsDataModelSettings,
+                    resultsConnectionDetails = rConnectionDetails
+                )
+
             # upload results to the database
             rStrategus.uploadResults(
                 resultsConnectionDetails = rConnectionDetails,
@@ -976,10 +976,10 @@ def construct_jdbc_url(db_credentials):
 @flow(name="drop-strategus-results-schema", log_prints=True)
 def drop_strategus_results_schema(dbSettings):
     database_code = dbSettings['database_code']
-    results_schema = f'results_{dbSettings["dataset_id"]}' # TODO: change to study_id
+    results_schema = f'results_{dbSettings["study_id"]}'
     dbdao = DBDao(use_cache_db=False,
-                  database_code=database_code)
-    
+                  database_code=database_code, is_study_results_db=True)
+
     if(dbdao.check_schema_exists(results_schema)):
         dbdao.drop_schema(results_schema, True)
     else:

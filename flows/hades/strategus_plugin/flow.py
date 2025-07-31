@@ -1,3 +1,4 @@
+import re
 import traceback
 from functools import partial
 import json
@@ -150,9 +151,11 @@ def runStrategus(json_graph, options):
     schema_name = options.get('schemaName', None)
     upload_results = options.get('uploadResults', False)
 
-    # TODO: Uncomment when study_id is required
-    # if(not study_id):
-    #    raise Exception('StudyId is missing')
+    if(not study_id):
+       raise Exception('StudyId is missing')
+    pattern = r'^[a-zA-Z0-9_]+$'
+    if not re.fullmatch(pattern, study_id):
+        raise Exception(f'StudyId {study_id} is not valid. It should only contain alphanumeric characters and underscores.')
     if(not datasetId):
        raise Exception('DatasetId is missing')
     if(not database_code):
@@ -174,6 +177,7 @@ def runStrategus(json_graph, options):
     if isinstance(analysisSpec, str):
         analysisSpec = json.loads(analysisSpec)
     
+    analysisSpec = json.dumps(analysisSpec)
     defaultExecutionSettings = json.dumps({
         "workDatabaseSchema": schema_name,
         "cdmDatabaseSchema": schema_name,
@@ -191,7 +195,12 @@ def runStrategus(json_graph, options):
 
     execute_r_strategus(analysisSpec, executionSettings, dbSettings)
     if(upload_results):
-        upload_strategus_results(analysisSpec, path_to_results, dbSettings)
+        result_db_settings = {
+            'database_code': get_study_results_db_code(),
+            "dataset_id": datasetId,
+            "study_id": study_id
+        }
+        upload_strategus_results(analysisSpec, path_to_results, result_db_settings)
 
 def drop_strategus_results(options):
     """
@@ -206,7 +215,13 @@ def drop_strategus_results(options):
        raise Exception('Database code is missing')
 
     drop_strategus_results_schema(dbSettings={
-        'database_code': database_code,
+        'database_code': get_study_results_db_code(),
         'dataset_id': datasetId,
         'study_id': study_id
     })
+
+def get_study_results_db_code():
+    """
+    Returns the database code for the Strategus results database.
+    """
+    return "study_results"
