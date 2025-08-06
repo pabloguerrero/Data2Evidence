@@ -1,6 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-test('pa-filter-cards', async ({ page }) => {
+const TEST_NAME = 'pa-filter-cards'
+const SHOULD_SKIP = false
+test.fixme(SHOULD_SKIP, `${TEST_NAME} test is temporarily disabled.`)
+
+test(TEST_NAME, async ({ page }) => {
   // step 1 - navigate to the portal
   await page.goto('https://localhost:443/portal');
   await page.locator('input[name="identifier"]').click();
@@ -61,7 +65,6 @@ test('pa-filter-cards', async ({ page }) => {
   await page.getByRole('row', { name: '439777 271737000 Anemia 102.' }).getByRole('img').click();
   await page.getByRole('button', { name: 'Create' }).click();
   await page.getByRole('tab', { name: 'Selected concepts' }).click();
-  await page.screenshot({ path: 'screenshot_08_create_concept_set.png' });
   await page.getByRole('button', { name: 'Close' }).click();
   
   // step 8 - select concept set
@@ -82,7 +85,6 @@ test('pa-filter-cards', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('acute');
   await page.getByText('Acute cholecystitis - Acute').click();
   await page.getByRole('textbox', { name: 'Enter search term' }).click();
-  await page.screenshot({ path: 'screenshot_08_select_condition_occurrence.png' });
   
   // step 8 - incorrect Condition Occurrence concept 
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('abc');
@@ -114,7 +116,6 @@ test('pa-filter-cards', async ({ page }) => {
   const monthOfBirthErrorBgcolor = await page.getByText('5.x').locator('..').evaluate(el =>
     window.getComputedStyle(el).backgroundColor); 
   expect(monthOfBirthErrorBgcolor).toBe('rgb(226, 49, 1)');
-  await page.screenshot({ path: 'screenshot_08_correct_incorrect_birth_input.png' });
   await page.locator('div').filter({ hasText: /^5\.x$/ }).locator('span').nth(1).click();
 
   //step 9 - remove filter card
@@ -164,7 +165,6 @@ test('pa-filter-cards', async ({ page }) => {
   await page.getByTitle('Observation A - Observation').locator('div').nth(1).click();
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('Shell');
   await page.getByText('Shellfish allergy - Shellfish').click();
-  await page.screenshot({ path: 'screenshot_16_final.png' });
   await page.getByRole('button', { name: '↺' }).click();
   await page.getByRole('button', { name: 'Reset' }).click();
 });
