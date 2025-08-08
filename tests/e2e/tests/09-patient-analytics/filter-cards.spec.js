@@ -80,7 +80,8 @@ test(TEST_NAME, async ({ browser }) => {
 
   // Step 8 - Select concept set
   await page.getByTitle('Condition Occurrence A - Condition concept Set').locator('div').nth(1).click();
-  await page.getByRole('textbox', { name: 'Enter search term' }).waitFor({ state: 'visible' });
+  await page.waitForTimeout(1500)
+  await page.waitForSelector('text=Enter search term', { state: 'visible' });
   await page.getByRole('textbox', { name: 'Enter search term' }).fill(RANDOM_NAME);
   await expect(page.getByText(RANDOM_NAME, { exact: false })).toBeVisible();
   await page.waitForTimeout(1500)
@@ -89,7 +90,8 @@ test(TEST_NAME, async ({ browser }) => {
 
   // Step 8 - Entering incorrect condition occurrence concept
   await page.getByTitle('Condition Occurrence A - Condition concept Name').locator('div').nth(1).click();
-  await page.getByRole('textbox', { name: 'Enter search term' }).waitFor({ state: 'visible' });
+  await page.waitForTimeout(1500)
+  await page.waitForSelector('text=Enter search term', { state: 'visible' });
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('abc');
   await page.waitForTimeout(3000);
   await page.getByText('abc').click();
