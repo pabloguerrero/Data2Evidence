@@ -78,6 +78,9 @@ test(TEST_NAME, async ({ browser }) => {
   // Step 8 - Select concept set
   await page.getByTitle('Condition Occurrence A - Condition concept Set').locator('div').nth(1).click();
   await page.waitForTimeout(1500)
+  await page.getByRole('textbox', { name: 'Enter search term' }).waitFor({ state: 'visible', timeout: 10000 });
+  await page.getByRole('textbox', { name: 'Enter search term' }).waitFor({ state: 'attached', timeout: 5000 });
+  await expect(page.getByRole('textbox', { name: 'Enter search term' })).toBeEnabled();
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('test_concept_set');
   await expect(page.getByText('test_concept_set', { exact: false }).first()).toBeVisible();
   await page.waitForTimeout(1500)
