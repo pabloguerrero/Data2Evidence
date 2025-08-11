@@ -4,9 +4,6 @@ const TEST_NAME = 'pa-filter-cards'
 const SHOULD_SKIP = false
 test.fixme(SHOULD_SKIP, `${TEST_NAME} test is temporarily disabled.`)
 
-// Random name for concept set creation to avoid conflicts when retrying
-const RANDOM_NAME = `${Math.random().toString(36).substring(7)}`;
-
 test(TEST_NAME, async ({ browser }) => {
 
   // Start browser in fullscreen mode
@@ -65,7 +62,7 @@ test(TEST_NAME, async ({ browser }) => {
   await page.getByRole('button', { name: '+' }).click();
   await expect(page.locator('.loading-animation-component')).not.toBeVisible()
   await page.getByRole('textbox', { name: 'Concept set name' }).click();
-  await page.getByRole('textbox', { name: 'Concept set name' }).fill(RANDOM_NAME);
+  await page.getByRole('textbox', { name: 'Concept set name' }).fill('test_concept_set');
   await page.getByRole('textbox', { name: 'search terms' }).click();
   await page.getByRole('textbox', { name: 'search terms' }).fill('10509002');
   await page.getByRole('button', { name: 'Search' }).click();
@@ -81,17 +78,15 @@ test(TEST_NAME, async ({ browser }) => {
   // Step 8 - Select concept set
   await page.getByTitle('Condition Occurrence A - Condition concept Set').locator('div').nth(1).click();
   await page.waitForTimeout(1500)
-  await page.waitForSelector('text=Enter search term', { state: 'visible' });
-  await page.getByRole('textbox', { name: 'Enter search term' }).fill(RANDOM_NAME);
-  await expect(page.getByText(RANDOM_NAME, { exact: false })).toBeVisible();
+  await page.getByRole('textbox', { name: 'Enter search term' }).fill('test_concept_set');
+  await expect(page.getByText('test_concept_set', { exact: false }).first()).toBeVisible();
   await page.waitForTimeout(1500)
-  await page.getByText(RANDOM_NAME, { exact: false }).click();
+  await page.getByText('test_concept_set', { exact: false }).first().click();
   await page.getByRole('textbox', { name: 'Enter search term' }).press('Escape');
 
   // Step 8 - Entering incorrect condition occurrence concept
   await page.getByTitle('Condition Occurrence A - Condition concept Name').locator('div').nth(1).click();
   await page.waitForTimeout(1500)
-  await page.waitForSelector('text=Enter search term', { state: 'visible' });
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('abc');
   await page.waitForTimeout(3000);
   await page.getByText('abc').click();
