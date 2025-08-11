@@ -78,9 +78,7 @@ test(TEST_NAME, async ({ browser }) => {
   // Step 8 - Select concept set
   await page.getByTitle('Condition Occurrence A - Condition concept Set').locator('div').nth(1).click();
   await page.waitForTimeout(1500)
-  await page.getByRole('textbox', { name: 'Enter search term' }).waitFor({ state: 'visible', timeout: 10000 });
-  await page.getByRole('textbox', { name: 'Enter search term' }).waitFor({ state: 'attached', timeout: 5000 });
-  await expect(page.getByRole('textbox', { name: 'Enter search term' })).toBeEnabled();
+  await page.getByRole('textbox', { name: 'Enter search term' }).fill('');
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('test_concept_set');
   await expect(page.getByText('test_concept_set', { exact: false }).first()).toBeVisible();
   await page.waitForTimeout(1500)
@@ -90,6 +88,7 @@ test(TEST_NAME, async ({ browser }) => {
   // Step 8 - Entering incorrect condition occurrence concept
   await page.getByTitle('Condition Occurrence A - Condition concept Name').locator('div').nth(1).click();
   await page.waitForTimeout(1500)
+  await page.getByRole('textbox', { name: 'Enter search term' }).fill('');
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('abc');
   await page.waitForTimeout(3000);
   await page.getByText('abc').click();
@@ -133,6 +132,7 @@ test(TEST_NAME, async ({ browser }) => {
 
   // Step 12 - Basic data filter for gender
   await page.getByTitle('Basic Data - Gender').locator('div').nth(1).click();
+  await page.getByRole('textbox', { name: 'Enter search term' }).fill('');
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('Female');
   await page.getByText('FEMALE - FEMALE').click();
   await page.getByRole('button', { name: '' }).click();
@@ -142,6 +142,7 @@ test(TEST_NAME, async ({ browser }) => {
   await page.getByText('Gender concept id').click();
   await page.getByText('Select an AttributeSelect').click();
   await page.getByTitle('Basic Data - Gender concept id').locator('div').nth(1).click();
+  await page.getByRole('textbox', { name: 'Enter search term' }).fill('');
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('8532');
   await page.getByText('- FEMALE').click();
 
@@ -157,6 +158,7 @@ test(TEST_NAME, async ({ browser }) => {
   await page.locator('div').filter({ hasText: /^Measurement concept set$/ }).first().click();
   await page.locator('#stacked-chart').click();
   await page.getByTitle('Measurement A - Measurement concept name').locator('div').nth(1).click();
+  await page.getByRole('textbox', { name: 'Enter search term' }).fill('');
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('glucose');
   await page.getByText('Glucose lab - Glucose lab').click();
   await page.locator('#stacked-chart').click();
@@ -172,6 +174,7 @@ test(TEST_NAME, async ({ browser }) => {
   await page.getByRole('menu').getByText('Observation concept set').click();
   await page.locator('#stacked-chart').click();
   await page.getByTitle('Observation A - Observation').locator('div').nth(1).click();
+  await page.getByRole('textbox', { name: 'Enter search term' }).fill('');
   await page.getByRole('textbox', { name: 'Enter search term' }).fill('Shell');
   await page.getByText('Shellfish allergy - Shellfish').click();
 
