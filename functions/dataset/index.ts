@@ -255,6 +255,7 @@ export class DatasetRouter {
                 databaseCode: databaseCode,
                 schemaName: schemaName,
                 cacheSchemaName: parsedNewCacheSchemaName,
+                fhirProjectId: fhirProjectId
               };
               await jobpluginsAPI.createFhirCacheFlowRun(fhirCacheFlowRunDto);
             } catch (error) {

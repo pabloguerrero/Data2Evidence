@@ -830,12 +830,17 @@
                   "cacheSchemaName": {
                     "title": "Cacheschemaname",
                     "type": "string"
+                  },
+                  "fhirProjectId": {
+                    "title": "Fhir Project Id",
+                    "type": "string"
                   }
                 },
                 "required": [
                   "databaseCode",
                   "schemaName",
-                  "cacheSchemaName"
+                  "cacheSchemaName",
+                  "fhirProjectId"
                 ],
                 "title": "CreateDuckdbDatabaseFileType",
                 "type": "object"

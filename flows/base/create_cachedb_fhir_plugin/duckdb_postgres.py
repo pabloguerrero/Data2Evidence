@@ -1,7 +1,7 @@
 from prefect import task
 from prefect.logging import get_run_logger
 
-from .config import CreateDuckdbDatabaseFileType
+from .types import CreateDuckdbDatabaseFileType
 
 
 @task(log_prints=True)
@@ -19,7 +19,7 @@ def copy_schema_to_cache(con, dbdao: any, options: CreateDuckdbDatabaseFileType)
             try:
                 logger.info(f"Copying table: {table}")
                 columns = dbdao.get_columns(options.schemaName, table)
-                
+                where_clause = f"WHERE projectId = \'{options.fhirProjectId}\'"
                 casted_columns = []
                 for col in columns:
                     # if col.lower().endswith('text') or col.lower().endswith('_text'):
@@ -28,7 +28,7 @@ def copy_schema_to_cache(con, dbdao: any, options: CreateDuckdbDatabaseFileType)
                     else:
                         casted_columns.append(col)
                 select_columns = ', '.join(casted_columns)
-                count_sql = f'SELECT COUNT(*) FROM "{options.sourceDatabase}"."{options.schemaName}"."{table}"'
+                count_sql = f'SELECT COUNT(*) FROM "{options.sourceDatabase}"."{options.schemaName}"."{table}" {where_clause}'
                 con.execute(count_sql)
                 total_rows = con.fetchone()[0]
                 offset = 0
@@ -39,10 +39,10 @@ def copy_schema_to_cache(con, dbdao: any, options: CreateDuckdbDatabaseFileType)
                     limit_clause = f"LIMIT {chunk_size} OFFSET {offset}"
                     if first_chunk:
                         logger.info(f"Creating table: {table}")
-                        create_sql = f'CREATE TABLE IF NOT EXISTS "{options.databaseCode}"."{options.cacheSchemaName}"."{table}" AS FROM (SELECT {select_columns} FROM "{options.sourceDatabase}"."{options.schemaName}"."{table}" {limit_clause})'
+                        create_sql = f'CREATE TABLE IF NOT EXISTS "{options.databaseCode}"."{options.cacheSchemaName}"."{table}" AS FROM (SELECT {select_columns} FROM "{options.sourceDatabase}"."{options.schemaName}"."{table}" {where_clause} {limit_clause})'
                     else:
                         logger.info(f"Inserting chunk into table: {table}")
-                        create_sql = f'INSERT INTO "{options.databaseCode}"."{options.cacheSchemaName}"."{table}" SELECT {select_columns} FROM "{options.sourceDatabase}"."{options.schemaName}"."{table}" {limit_clause}'
+                        create_sql = f'INSERT INTO "{options.databaseCode}"."{options.cacheSchemaName}"."{table}" SELECT {select_columns} FROM "{options.sourceDatabase}"."{options.schemaName}"."{table}" {where_clause} {limit_clause}'
                     con.execute(create_sql)
                     offset += chunk_size
                     first_chunk = False

@@ -7,12 +7,10 @@ from prefect.blocks.system import Secret
 from prefect.logging import get_run_logger
 
 from .duckdb_postgres import copy_schema_to_cache
-from .config import CreateDuckdbDatabaseFileType
+from .types import CreateDuckdbDatabaseFileType
 from .utils import check_supported_duckdb_dialects
 
 from _shared_flow_utils.dao.DBDao import DBDao
-
-
 
 os.environ['plugin_name'] = 'create_cachedb_fhir_plugin'
 
