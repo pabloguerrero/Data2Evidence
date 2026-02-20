@@ -312,6 +312,7 @@ export default {
       'fetchDataQualityFlowRun',
       'generateDataQualityFlowRun',
       'resetChart',
+      'clearWizardConfig',
     ]),
     ...mapMutations([types.SET_ACTIVE_BOOKMARK, types.CONFIG_SET_HAS_ASSIGNED]),
     openCompareDialog() {
@@ -339,6 +340,7 @@ export default {
       }
     },
     loadBookmark() {
+      this.clearWizardConfig()
       this.loadbookmarkToState({ bmkId: this.selectedBmkId, chartType: this.selectedChartType })
         .then(() => {
           this.$emit('unloadBookmarkEv', false)
@@ -353,6 +355,7 @@ export default {
       try {
         // Get Atlas JSON using our new store action
         const atlasJson = await this.$store.dispatch('fireGetAtlasCohortDefinitionQuery', atlasDefinitionId)
+        this.clearWizardConfig()
 
         // Create a fake bookmark object for the tab display
         const atlasBookmark = {
@@ -519,6 +522,9 @@ export default {
     },
     saveCohortChanges() {
       this.showSaveOrDiscardDialog = false
+      if (this.isAddNewCohort) {
+        this.clearWizardConfig()
+      }
       this.$emit('unloadBookmarkEv', false)
     },
     openAddNewCohort() {
@@ -533,6 +539,7 @@ export default {
       this.isInvalidName = false
     },
     addNewCohort() {
+      this.clearWizardConfig()
       this.cohortName = this.checkCohortName(this.cohortName)
       this[types.SET_ACTIVE_BOOKMARK]({ bookmarkname: this.cohortName, isNew: true })
       this.closeAddNewCohort()
@@ -635,6 +642,7 @@ export default {
       }
     },
     openNewAtlasBookmark() {
+      this.clearWizardConfig()
       // Create a new Atlas bookmark object
       const atlasBookmark = {
         bookmarkname: 'New Atlas Cohort',
