@@ -7,7 +7,7 @@
 
 <!--- [![GitHub Release](https://img.shields.io/github/v/release/ohdsi/d2e?label=notes&logo=github)](https://github.com/ohdsi/d2e/releases) --->
 
-:construction: **Data2Evidence is beta software. There might be breaking changes.** :construction:
+:construction: **Data2Evidence is beta software. Breaking changes may occur.** :construction:
 
 
 ### Why the Data2Evidence platform?
@@ -22,7 +22,7 @@ Explore datasets with interactive views of the data to evaluate the utility of t
 Easily create and manage cohorts using a visual interface without any coding knowledge.
 
 - **Integrated OHDSI Solutions:**
-OHDSI solutions like **Achilles** for descriptive analytics, **Data Quality Dashboard** for data quality analysis and **ATLAS** for cohort building are integrated in the platform.
+OHDSI solutions like **Achilles** for descriptive analytics, **Data Quality Dashboard** for data quality analysis and **ATLAS** for cohort building are integrated into the platform.
 
 - **Efficient Data Management:**  
 Organize, store, and secure your research datasets with robust governance and streamlined access.
@@ -37,22 +37,22 @@ You can find a video of Data2Evidence Cohort Functionality [here](https://www.yo
 
 ### Data2Evidence Quick Start
 
-Data2Evidence requires **Docker** and **npm** to be installed. You can find more information [here](https://docs.d2e.sg)
+Data2Evidence requires **Docker** and **npm** to be installed. You can find more information [here](https://docs.d2e.sg).
 
 > Note: On Windows [WSL/Ubuntu](https://apps.microsoft.com/detail/9pdxgncfsczv) is required to run D2E
+
+Create a folder for Data2Evidence:
+```bash
+mkdir d2e
+cd d2e
+```
 
 Install the Data2Evidence CLI by running:
 ```bash
 npm i -g d2e
 ```
 
-Create folder for Data2Evidence:
-```bash
-mkdir d2e
-cd d2e
-```
-
-Generate `.env` file for Data2Evidence with random generated secretes and certificats:
+Generate `.env` file for Data2Evidence with random generated secrets and certificates:
 ```bash
 d2e init
 ```
@@ -63,19 +63,19 @@ d2e -e pull
 d2e -e start
 ```
 
-Create and load demo dataset by running:
+Create and load the demo dataset by running:
 ```bash
 d2e setupdemo
 ```
 
-You should now be able to see the d2e portal when opening **[https://localhost:443](https://localhost:443)**. You can login with the **username** `admin` and the **password** `Updatepassword12345`.
+You should now be able to see the Data2Evidence portal when opening **[https://localhost:443](https://localhost:443)**. You can log in with the **username** `admin` and the **password** `Updatepassword12345`.
 
 For additional setup details and configuration options, please visit the **[D2E documentation](https://docs.d2e.sg)**.
 
 ### Issues & Bug Reports
 Encounter an issue or have a feature request? Please help us improve by reporting them through the [GitHub Issues](https://github.com/ohdsi/d2e/issues) page.
 
-### CICD
+### CI/CD
 
 #### Build / Tests
 | d2e services  | d2e  functions | d2e ui  |
@@ -86,6 +86,6 @@ Encounter an issue or have a feature request? Please help us improve by reportin
 | |  **d2e flows**  | [![d2e-ui/portal unit tests (Components Library)](https://github.com/ohdsi/d2e/actions/workflows/ui-alp-portal-test-components.yml/badge.svg)](https://github.com/ohdsi/d2e/actions/workflows/ui-alp-portal-test-components.yml) | 
 | | [![d2e-flows build plugin](https://github.com/ohdsi/d2e/actions/workflows/flows-plugin-ci.yml/badge.svg)](https://github.com/ohdsi/d2e/actions/workflows/flows-plugin-ci.yml) | [![d2e-ui/pyqe unit tests](https://github.com/ohdsi/d2e/actions/workflows/ui-pyqe-test.yml/badge.svg)](https://github.com/ohdsi/d2e/actions/workflows/ui-pyqe-test.yml) |  
 
-### Get in contact
+### Get in touch
 
-Please [click here](https://discord.gg/5XtHky2BZe) to join us in Discord.
+[Click here](https://discord.gg/5XtHky2BZe) to join us in Discord.
