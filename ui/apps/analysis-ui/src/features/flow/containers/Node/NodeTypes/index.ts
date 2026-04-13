@@ -230,7 +230,7 @@ export const NodeChoiceMap: { [key in NodeTypeChoice]: NodeChoiceAttr } = {
     ],
   },
   target_comparator_outcomes_node: {
-    title: "Target Compartor Outcomes",
+    title: "Target Comparator Outcomes",
     description: "Run target comparator outcomes code",
     tag: NodeTag.Stable,
     defaultData: {
